@@ -13,18 +13,22 @@ To start the program you're gonna need:
 
 ## Seting up the virtual enviroment 
 
-1. In Command Line go to cloned DeepECG repository. Create virtual environment - after this you shuld have aditional folfer **venv**. 
+1. in Command Line go to cloned DeepECG repository. Create virtual environment - after this you shuld have aditional folfer **venv**
 
 ```commandline
 C:\path\DeepECG> python -m venv C:\path\DeepECG\venv
 ```
-2. Activate environment - after this step *(venv)* should appear before path in the line.
+2. activate environment - after this step *(venv)* should appear before path in the line
 ```commandline
 C:\path\DeepECG> C:\path_to_program\DeepECG\venv\Scripts\activate
 ```
 
-3. Install requirements.
+3. install requirements
 ```commandline
 (venv) C:\path\DeepECG> pip install -r requirements.txt
 ```
 
+4. run files freely 
+```commandline
+(venv) C:\path\DeepECG> python open_data.py
+```

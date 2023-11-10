@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import numpy as np
 import wfdb
 import matplotlib.pyplot as plt
 
@@ -22,31 +23,28 @@ healthy_patients_unique = healthy_patients.drop_duplicates(subset='patient_id', 
 print(f'Number of recordings: {len(metadata)}\nNumber of healthy recordings: {len(healthy_patients)}\nNumber of healthy patients: {len(healthy_patients_unique)}')
 
 
-# # saving the new data
-#os.makedirs(new_data_path, exist_ok=True)
-#new_metadata_path = os.path.join(new_data_path, 'ptbxl_database_healthy.csv')
-#healthy_patients.to_csv(new_metadata_path, index=False)
-
 
 #---------example for  filtering------------
-
-# SOMETHING DOES NOT WORK HERE YET, FILTERING IS WRONG
 
 first_healthy_patient = healthy_patients_unique.iloc[0]
 record_path = os.path.join(data_path, f"{first_healthy_patient['filename_hr']}")
 record = wfdb.rdrecord(record_path)
 
 ecg_signal = record.p_signal[:, 0]  # Assuming the first lead (column) is used
+print(type(ecg_signal))
 
 fs = record.fs
+t = np.arange(0,len(ecg_signal))/fs
 
 filtered = filter_signal(ecg_signal, fs)
 
+
 plt.figure(figsize=(12, 6))
-plt.plot(ecg_signal, label='Original ECG')
-plt.plot(filtered, label='Filtered ECG - STH IS WRONG IM GONNA FIX IT')
-plt.title('Original and Filtered ECG Signals - FILTERING IS WRONG FOR NOW')
+plt.plot(t, ecg_signal, 'k', label='Original ECG')
+plt.plot(t, filtered, 'm', label='Filtered ECG')
+plt.title('Original and Filtered ECG Signals')
+plt.xlim(0,10)
 plt.xlabel('Time (s)')
-plt.ylabel('Amplitude')
+plt.ylabel('Amplitude (mV)')
 plt.legend()
 plt.show()
