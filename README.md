@@ -30,5 +30,5 @@ C:\path\DeepECG> C:\path_to_program\DeepECG\venv\Scripts\activate
 
 4. run files freely 
 ```commandline
-(venv) C:\path\DeepECG> python open_data.py
+(venv) C:\path\DeepECG> python run.py
 ```
