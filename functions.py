@@ -28,23 +28,18 @@ class ECGDataset(Dataset):
         return [signal[:5*500], signal[5*500:]]
 
     def __getitem__(self, idx):
+
         record_info = self.metadata.iloc[idx]
         record_path_hr = os.path.join(self.data_path, f"{record_info['filename_hr']}")
         record = wfdb.rdrecord(record_path_hr)
 
         # assuming the first 3 leads (column) are used
         leads = record.p_signal[:, [0, 1, 2]].T  
-
-        # apply the filters
         filtered_sigals = [self.filter_fn(lead, record.fs) for lead in leads]
-
-        #cut into two 5s recordings
         cut_signals = [self.cut_signal(signal) for signal in filtered_sigals]
-
-        # flatten the list of cut signals
         cut_filtered_signals = [item for sublist in cut_signals for item in sublist]
-
-        return [torch.Tensor(signal) for signal in cut_filtered_signals], record_info['patient_id']
+        
+        return [torch.Tensor(signal.copy()) for signal in cut_filtered_signals], record_info['patient_id']
     
 
 
@@ -65,7 +60,7 @@ def filter_signal(signal, fs=500):
     return signal
 
 
-def open_and_filter_data(data_path, filter_fn):
+def open_data(data_path, filter_fn):
     metadata_path = os.path.join(data_path, 'ptbxl_database.csv')
     metadata = pd.read_csv(metadata_path)
     
@@ -79,11 +74,11 @@ def open_and_filter_data(data_path, filter_fn):
 
 
 def save_data(split_data, new_data_path, split_type):
-    # Save metadata
+    # save metadata
     metadata_path = os.path.join(new_data_path, 'metadata', f'{split_type}_metadata.csv')
     split_data.to_csv(metadata_path, index=False)
 
-    # Save filtered signals
+    # save filtered signals
     signals_path = os.path.join(new_data_path, 'filtered_signals', f'{split_type}_signals.pt')
     torch.save(ECGDataset(split_data, '', filter_signal), signals_path)
 
@@ -103,15 +98,14 @@ def split_and_save(ecg_dataset, new_data_path, split_ratio=0.1, random_state=42)
 
     train_data, test_data = train_test_split(ecg_dataset.metadata, test_size=split_ratio, random_state=random_state)
 
-    # Path to directory for train/test data
     os.makedirs(os.path.join(new_data_path, 'metadata'), exist_ok=True)
     os.makedirs(os.path.join(new_data_path, 'filtered_signals'), exist_ok=True)
 
-    # Save train metadata and signals
     save_data(train_data, new_data_path, 'train')
 
-    # Save test metadata and signals
     save_data(test_data, new_data_path, 'test')
+
+
 
 def plot_comparison(ecg_dataset, idx):
     record_info = ecg_dataset.metadata.iloc[idx]
@@ -119,12 +113,10 @@ def plot_comparison(ecg_dataset, idx):
     record = wfdb.rdrecord(record_path_hr)
     ecg_signal = record.p_signal[:, 0]  # Assuming the first lead (column) is used
 
-    # Apply the notch filter
     filtered_ecg = ecg_dataset.filter_fn(ecg_signal, record.fs)
 
     t = np.arange(0, len(ecg_signal)) / record.fs
 
-    # Plot original and filtered signals
     plt.figure(figsize=(12, 6))
     plt.plot(t, ecg_signal, 'k', label='Original ECG')
     plt.plot(t, filtered_ecg, 'm', label='Filtered ECG')
