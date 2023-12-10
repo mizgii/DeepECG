@@ -24,22 +24,26 @@ class ECGDataset(Dataset):
     def __len__(self):
         return len(self.metadata)
     
-    def cut_signal(self, signal):
-        return [signal[:5*500], signal[5*500:]]
-
-    def __getitem__(self, idx):
+    def __getitem__(self, idx, subset):
 
         record_info = self.metadata.iloc[idx]
-        record_path_hr = os.path.join(self.data_path, f"{record_info['filename_hr']}")
-        record = wfdb.rdrecord(record_path_hr)
+        record_path_lr = os.path.join(self.data_path, f"{record_info['filename_lr']}")
+        record = wfdb.rdrecord(record_path_lr)
+        print(f"Processing record at index {idx}")
 
-        # assuming the first 3 leads (column) are used
-        leads = record.p_signal[:, [0, 1, 2]].T  
-        filtered_sigals = [self.filter_fn(lead, record.fs) for lead in leads]
-        cut_signals = [self.cut_signal(signal) for signal in filtered_sigals]
-        cut_filtered_signals = [item for sublist in cut_signals for item in sublist]
-        
-        return [torch.Tensor(signal.copy()) for signal in cut_filtered_signals], record_info['patient_id']
+        signal = record.p_signal[:, 0].T
+        signal = self.filter_fn(signal, record.fs)
+
+        midpoint = len(signal)//2
+ 
+        if len(signal) != 10*record.fs:
+            raise ValueError(f"Invalid signal length: {len(signal)}. Expected length: 1000.")
+
+        if subset == 'train' or 'test':
+            return [torch.Tensor(signal[:midpoint].copy()) , record_info['patient_id']]
+        elif subset == 'validation':
+            return [torch.Tensor(signal[midpoint:].copy()) , record_info['patient_id']]
+    
     
 
 
@@ -48,11 +52,9 @@ class ECGDataset(Dataset):
 #--------------------------------------------
 
 
-def filter_signal(signal, fs=500):
+def filter_signal(signal, fs=100):
 
-    lowcut = 0.5  # Lower cutoff frequency in Hz
-
-    [b, a] = butter(3, lowcut, btype='highpass', fs=fs)
+    [b, a] = butter(3, (0.5, 40), btype='bandpass', fs=fs)
     signal = filtfilt(b, a, signal, axis=0)
     [bn, an] = iirnotch(50, 3, fs=fs)
     signal = filtfilt(bn, an, signal, axis=0)
@@ -66,7 +68,7 @@ def open_data(data_path, filter_fn):
     
     # we're only using healthy patients
     healthy_patients = metadata[metadata['scp_codes'].str.contains('NORM', na=False)]
-    #healthy_patients = healthy_patients[:10]
+    healthy_patients = healthy_patients[:10]
 
     print(f"Number of recordings: {len(metadata)}\nNumber of healthy recordings: {len(healthy_patients)}\nNumber of healthy patients: {len(healthy_patients.drop_duplicates(subset='patient_id', keep='first'))}")
 
@@ -75,11 +77,11 @@ def open_data(data_path, filter_fn):
 
 def save_data(split_data, new_data_path, split_type):
     # save metadata
-    metadata_path = os.path.join(new_data_path, 'metadata', f'{split_type}_metadata.csv')
-    split_data.to_csv(metadata_path, index=False)
+    #metadata_path = os.path.join(new_data_path, 'metadata', f'{split_type}_metadata.csv')
+    #split_data.to_csv(metadata_path, index=False)
 
     # save filtered signals
-    signals_path = os.path.join(new_data_path, 'filtered_signals', f'{split_type}_signals.pt')
+    signals_path = os.path.join(new_data_path, f'{split_type}_signals.pt')
     torch.save(ECGDataset(split_data, '', filter_signal), signals_path)
 
     print(f"{split_type.capitalize()} set size: {len(split_data)}")

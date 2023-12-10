@@ -36,6 +36,8 @@ class ECGNet(nn.Module):
 
         self.dropout = nn.Dropout(p=0.5)
 
+        #softmax?
+
 
     def forward(self, x):
         # Input shape: (batch_size, channels, length)
@@ -44,19 +46,19 @@ class ECGNet(nn.Module):
         x = self.maxpool3(self.relu3(self.conv3(x)))
         x = self.maxpool4(self.lrn2(self.relu4(self.conv4(x))))
 
-        x = x.view(-1, hidden_units * 8 * 4)  #flattening
+        x = x.view(-1, self.hidden_units * 8 * 4)  #flattening
 
         x = self.dropout(self.relu5(self.fc1(x)))
         x = self.fc2(x)
 
-
         return x
-
+    
+#try on data
 
 
 # Function to train the model
 def train_model(model, train_loader, criterion, optimizer, num_epochs=10):
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
     model.to(device)
 
     for epoch in range(num_epochs):
@@ -111,9 +113,11 @@ input_channels = None
 hidden_units = None
 cnn_model = ECGNet(input_channels, hidden_units, num_classes)
 
-criterion = nn.CrossEntropyLoss() #defining loss func
+criterion = nn.CrossEntropyLoss() #if it aplies softmax, if not add it in model
 optimizer = optim.Adam(cnn_model.parameters(), lr=0.001) #defining optimizer
 
 train_model(cnn_model, train_loader, criterion, optimizer, num_epochs=10)
 
 evaluate_model(cnn_model, test_loader)
+
+#perform the training
