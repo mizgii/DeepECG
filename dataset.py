@@ -142,10 +142,3 @@ def preprocess_and_save(data_path, save_path):
         
         np.save(save_signals_file, filtered_signals)
         np.save(save_qrs_file, corrected_peak_inds)
-
-
-if __name__ == '__main__':
-    data_path = r'C:\Users\mizgi\Desktop\gowno\studia\erasmus\a_lab_bisp\DeepECG\sharee'
-    save_path = r'C:\Users\mizgi\Desktop\gowno\studia\erasmus\a_lab_bisp\DeepECG\sharee_preprocessed'
-
-    preprocess_and_save(data_path, save_path)
