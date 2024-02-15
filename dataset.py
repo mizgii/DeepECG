@@ -3,6 +3,7 @@ import re
 import wfdb
 import numpy as np
 from wfdb import processing
+import sys
 
 from tqdm import tqdm
 from scipy.signal import butter, iirnotch, filtfilt
@@ -142,3 +143,13 @@ def preprocess_and_save(data_path, save_path):
         
         np.save(save_signals_file, filtered_signals)
         np.save(save_qrs_file, corrected_peak_inds)
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        print("Usage: python dataset.py <data_path> <save_path>")
+        sys.exit(1)
+
+    data_path = sys.argv[1]
+    save_path = sys.argv[2]
+
+    preprocess_and_save(data_path, save_path)
