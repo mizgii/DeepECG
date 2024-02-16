@@ -121,7 +121,7 @@ def preprocess_and_save(data_path, save_path):
 
         record = wfdb.rdrecord(record_path)
         fs = record.fs
-        signals = record.p_signal.T  #getting the shape (number of channels x number of samples)
+        signals = record.p_signal[(fs*60*5):, [0,1]].T  #getting the shape (number of channels x number of samples)
         
         interpolated_signals = interpolate_nans(signals)
 

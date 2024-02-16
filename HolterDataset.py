@@ -32,14 +32,15 @@ class ECGDataset(Dataset):
         n_windows = self.n_windows
         N = self.ecg_signals.shape[2]
         for signal in self.ecg_signals:
-            random_idx = [random.randint(0, N - window_size - 1) for i in range(n_windows)]
-            random_idx.sort()
-            for w in range(n_windows):
-                start_point = random_idx[w]
-                end_point = start_point + window_size 
+            start_point = 0
+            end_point = window_size
+            for _ in range(n_windows):
                 sig.append(signal[:,start_point:end_point])
                 id.append(self.ids[i])
                 id_mapped.append(self.id_mapped_tensor[i])
+                random_val = random.randint(0, 10) * 3600
+                start_point += random_val
+                end_point = start_point + window_size
             i += 1   
 
         sig = np.array(sig)
