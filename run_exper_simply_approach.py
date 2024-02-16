@@ -18,20 +18,9 @@ data_path = "cache/"
 ecgs = load.load_ecgs(data_path, ids)
 
 def run(NUM_FINETRE, NUM_SECONDI, NUM_BATCH, NUM_LEADS, NUM_EPOCHS, NUM_SOGGETTI):
-    '''
-    what I did (14.02.24):
-    - switched to torchmetrics accuracy 
-    - put iteration over epochs inside training function (thats not so important and its a personal preference)
-    - added time calculation for each epoch and the whole training process
-    - wrapped the model evaluation in a function and transported it to training.py file
-    small stuff: 
-    - adding loss.item() for memory efficency
-    - changed calculation of test_size
-    '''
 
     dataset= HD.ECGDataset(ecgs=ecgs[:NUM_SOGGETTI,:NUM_LEADS,:], ids=ids, fs=128, n_windows=NUM_FINETRE, seconds=NUM_SECONDI)
     train_ratio = 0.5
-    #test_ratio = 0.5
     train_size = int(train_ratio * len(dataset))
     test_size = len(dataset) - train_size # more robust than int(test_ratio * len(dataset))
     train_dataset, test_dataset = random_split(dataset, [train_size, test_size])
