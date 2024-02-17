@@ -8,11 +8,12 @@ def train_model(model: torch.nn.Module,
                loss_fn: torch.nn.Module, #criterion
                optimizer: torch.optim.Optimizer,
                device: torch.device,
-               num_epochs):
+               num_epochs,
+               output_shape):
     
     start_time = time.time()
     
-    accuracy_metric = Accuracy().to(device)
+    accuracy_metric = Accuracy(num_classes= output_shape, task='multiclass').to(device)
     for epoch in range(num_epochs):
         print(f'Epoch {epoch + 1}/{num_epochs}')
 
@@ -44,10 +45,11 @@ def train_model(model: torch.nn.Module,
 def evaluate_model(model: torch.nn.Module,
                    test_loader: torch.utils.data.DataLoader, 
                    loss_fn: torch.nn.Module, #criterion
-                   device: torch.device):
+                   device: torch.device,
+                   output_shape):
 
     test_loss = 0
-    accuracy_metric = Accuracy().to(device)
+    accuracy_metric = Accuracy(num_classes=output_shape, task='multiclass').to(device)
 
     model.eval()#
     with torch.inference_mode(): 
@@ -63,4 +65,4 @@ def evaluate_model(model: torch.nn.Module,
     print(f"Test loss: {test_loss/len(test_loader):.5f} | Test accuracy: {test_acc:.2f}%\n")
     accuracy_metric.reset() 
 
-    return test_acc
+    return test_acc.item()

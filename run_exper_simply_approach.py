@@ -13,7 +13,7 @@ ids = ['1911', '2012']#dataset.extract_patient_ids("files/info.txt")
 #ids_mapped = {id: i for i, id in enumerate(ids)}
 #ecg = np.load("cache/1911_signal.npy")
 
-data_path = "cache/"
+data_path = r"C:\Users\mizgi\Desktop\gowno\studia\erasmus\a_lab_bisp\DeepECG\sharee_preprocessed"
 
 ecgs = load.load_ecgs(data_path, ids)
 
@@ -47,7 +47,8 @@ def run(NUM_FINETRE, NUM_SECONDI, NUM_BATCH, NUM_LEADS, NUM_EPOCHS, NUM_SOGGETTI
                 loss_fn=loss_fn,
                 optimizer=optimizer,
                 device=device, 
-                num_epochs=NUM_EPOCHS
+                num_epochs=NUM_EPOCHS,
+                output_shape = output_shape
                 )
         
             
@@ -55,6 +56,7 @@ def run(NUM_FINETRE, NUM_SECONDI, NUM_BATCH, NUM_LEADS, NUM_EPOCHS, NUM_SOGGETTI
                               test_loader=test_loader,
                               loss_fn=loss_fn,
                               device=device,
+                              output_shape = output_shape
                               )
     return accuracy
 
