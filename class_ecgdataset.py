@@ -6,7 +6,7 @@ from torch.utils.data import Dataset
 np.random.seed(42)
 
 class ECGDataset(Dataset):
-    def __init__(self, data_path, patient_ids, fs, n_windows, n_seconds, leads, subset):
+    def __init__(self, data_path, patient_ids, fs, n_windows, n_seconds, leads=None, subset='training'):
         self.data_path = data_path
         self.patient_ids = patient_ids
         self.fs = fs
@@ -56,4 +56,4 @@ class ECGDataset(Dataset):
         segment = signal[:, start_point:end_point]
         label = self.id_mapped[patient_id]
 
-        return torch.tensor(segment, dtype=torch.float), patient_id, torch.tensor(label, dtype=torch.long)
+        return torch.tensor(segment, dtype=torch.float), torch.tensor(label, dtype=torch.long)
