@@ -1,42 +1,39 @@
-import matplotlib.pyplot as plt
-from torch.utils.data import DataLoader, random_split 
-import HolterDataset as HD
+from torch.utils.data import DataLoader
+from class_ecgdataset import ECGDataset
 import neural
 from torch import nn
 import torch
-import load
 
 from training import train_model, evaluate_model
 
-device = "cuda" if torch.cuda.is_available() else "cpu" #should be in a place reachable by run function or in the function
-ids = ['1911', '2012']#dataset.extract_patient_ids("files/info.txt")
+
+ids = ['1911', '2012'] #dataset.extract_patient_ids("files/info.txt")
 #ids_mapped = {id: i for i, id in enumerate(ids)}
-#ecg = np.load("cache/1911_signal.npy")
+data_path = 'path/to/data'
 
-data_path = r"C:\Users\mizgi\Desktop\gowno\studia\erasmus\a_lab_bisp\DeepECG\sharee_preprocessed"
 
-ecgs = load.load_ecgs(data_path, ids)
+def run(NUM_FINETRE, NUM_SECONDI, NUM_BATCH, LEADS, NUM_EPOCHS, DATA_PATH, PATIENT_IDS, FS):
 
-def run(NUM_FINETRE, NUM_SECONDI, NUM_BATCH, NUM_LEADS, NUM_EPOCHS, NUM_SOGGETTI):
+    device = "cuda" if torch.cuda.is_available() else "cpu" 
 
-    dataset= HD.ECGDataset(ecgs=ecgs[:NUM_SOGGETTI,:NUM_LEADS,:], ids=ids, fs=128, n_windows=NUM_FINETRE, seconds=NUM_SECONDI)
-    train_ratio = 0.5
-    train_size = int(train_ratio * len(dataset))
-    test_size = len(dataset) - train_size # more robust than int(test_ratio * len(dataset))
-    train_dataset, test_dataset = random_split(dataset, [train_size, test_size])
+    train_dataset = ECGDataset(DATA_PATH, PATIENT_IDS, FS, NUM_FINETRE, NUM_SECONDI, LEADS, 'training')
+    test_dataset = ECGDataset(DATA_PATH, PATIENT_IDS, FS, NUM_FINETRE, NUM_SECONDI, LEADS, 'test')
 
     train_loader = DataLoader(train_dataset, batch_size=NUM_BATCH, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=NUM_BATCH, shuffle=False)
 
-    input_shape = NUM_LEADS
-    output_shape = len(dataset.classes) 
+    single_batch_segments, _ = next(iter(train_loader))
+
+    output_shape = len(PATIENT_IDS) 
     hidden_units = 32 
 
-    model = neural.DeepECG_DUMMY(input_shape, hidden_units, output_shape)
-    dummy_sig, _, _ = train_dataset[:]
-    final = model(dummy_sig)
+    # Initialize the dummy network and pass the single batch through
+    dummy_network = neural.DeepECG_DUMMY(len(LEADS), hidden_units, output_shape).to(device)
+    single_batch_segments = single_batch_segments.to(device)
+    final_features = dummy_network(single_batch_segments)
 
-    model=neural.DeepECG(input_shape, hidden_units, output_shape, final).to(device)
+    # Initialize the main model with the inferred number of features
+    model = neural.DeepECG(len(LEADS), hidden_units, output_shape, final_features).to(device)
 
     loss_fn = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(params=model.parameters(), lr=0.01)
@@ -60,7 +57,8 @@ def run(NUM_FINETRE, NUM_SECONDI, NUM_BATCH, NUM_LEADS, NUM_EPOCHS, NUM_SOGGETTI
                               )
     return accuracy
 
-accuracy= run(NUM_FINETRE=50, NUM_SECONDI=2, NUM_BATCH=16, NUM_LEADS=3, NUM_EPOCHS=10, NUM_SOGGETTI=70)
+accuracy= run(NUM_FINETRE=50, NUM_SECONDI=2, NUM_BATCH=16, LEADS=[0,1,2], NUM_EPOCHS=10, DATA_PATH = data_path, PATIENT_IDS =ids, FS=128)
 
 
 print(accuracy)
+

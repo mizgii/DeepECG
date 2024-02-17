@@ -19,7 +19,7 @@ def train_model(model: torch.nn.Module,
 
         model.train() #making sure model is in training mode
         train_loss = 0
-        for signal,  _, class_label in data_loader: 
+        for signal, class_label in data_loader: 
             signal, class_label = signal.to(device), class_label.to(device) #
             train_pred = model(signal)
             loss = loss_fn(train_pred, class_label)
@@ -53,7 +53,7 @@ def evaluate_model(model: torch.nn.Module,
 
     model.eval()#
     with torch.inference_mode(): 
-        for signal, _, class_label in test_loader:
+        for signal, class_label in test_loader:
             signal, class_label = signal.to(device), class_label.to(device)
             test_pred = model(signal)
             loss = loss_fn(test_pred, class_label)
