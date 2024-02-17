@@ -6,12 +6,14 @@ from torch.utils.data import Dataset
 np.random.seed(42)
 
 class ECGDataset(Dataset):
-    def __init__(self, data_path, patient_ids, fs, n_windows, n_seconds):
+    def __init__(self, data_path, patient_ids, fs, n_windows, n_seconds, leads, subset):
         self.data_path = data_path
         self.patient_ids = patient_ids
         self.fs = fs
         self.n_windows = n_windows
         self.n_seconds = n_seconds
+        self.leads = leads
+        self.subset = subset
         self.signal_cache = {}
         self.id_mapped = {pid: idx for idx, pid in enumerate(patient_ids)}
         self.segment_starts = {pid: self.generate_starts(pid) for pid in patient_ids}
@@ -19,14 +21,23 @@ class ECGDataset(Dataset):
     def load_signal(self, patient_id):
         if patient_id not in self.signal_cache:
             signal_path = os.path.join(self.data_path, f"{patient_id}_signal.npy")
-            self.signal_cache[patient_id] = np.load(signal_path)
+            signal = np.load(signal_path)
+            if self.leads is not None:
+                signal = signal[self.leads, :]
+            self.signal_cache[patient_id] = signal
         return self.signal_cache[patient_id]
 
     def generate_starts(self, patient_id):
         signal = self.load_signal(patient_id)
-        max_start = signal.shape[1] - self.n_seconds * self.fs
-        # make a grid of points that are n_seconds apart
-        all_starts = np.arange(0, max_start, self.n_seconds * self.fs) 
+        midpoint = signal.shape[1] // 2
+        if self.subset == 'training':
+            max_start = midpoint - self.n_seconds * self.fs
+            # make a grid of points that are n_seconds apart
+            all_starts = np.arange(0, max_start, self.n_seconds * self.fs) 
+        else:
+            max_start = signal.shape[1] - self.n_seconds * self.fs
+            all_starts = np.arange(0, max_start, self.n_seconds * self.fs) 
+        
         # and choose n_windows of them as our starting pts
         chosen_starts = np.random.choice(all_starts, self.n_windows, replace=False)
         return chosen_starts
