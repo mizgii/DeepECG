@@ -1,4 +1,5 @@
 
+import os
 import torch
 from torch import nn
 from torch.utils.data import DataLoader, Subset
@@ -7,12 +8,15 @@ from sklearn.model_selection import train_test_split
 import neural
 from class_ecgdataset import ECGDataset_halfday, ECGDataset
 from training import train_model, evaluate_model
-from dataset import extract_patient_ids
 
 
-def run(NUM_FINETRE, NUM_SECONDI, NUM_BATCH, LEADS, NUM_EPOCHS, DATA_PATH, PATIENT_IDS, FS):
+def run(NUM_FINETRE, NUM_SECONDI, NUM_BATCH, LEADS, NUM_EPOCHS, DATA_PATH, FS):
 
     device = "cuda" if torch.cuda.is_available() else "cpu" 
+
+    patient_ids_path = os.path.join(DATA_PATH, 'patient_ids.txt')
+    with open(patient_ids_path, 'r') as f:
+        PATIENT_IDS = [line.strip() for line in f.readlines()]
 
     full_dataset = ECGDataset(DATA_PATH, PATIENT_IDS, FS, NUM_FINETRE, NUM_SECONDI, LEADS)
 
@@ -66,9 +70,13 @@ def run(NUM_FINETRE, NUM_SECONDI, NUM_BATCH, LEADS, NUM_EPOCHS, DATA_PATH, PATIE
     return accuracy
 
 
-def run_halfday(NUM_FINETRE, NUM_SECONDI, NUM_BATCH, LEADS, NUM_EPOCHS, DATA_PATH, PATIENT_IDS, FS):
+def run_halfday(NUM_FINETRE, NUM_SECONDI, NUM_BATCH, LEADS, NUM_EPOCHS, DATA_PATH, FS):
 
     device = "cuda" if torch.cuda.is_available() else "cpu" 
+
+    patient_ids_path = os.path.join(DATA_PATH, 'patient_ids.txt')
+    with open(patient_ids_path, 'r') as f:
+        PATIENT_IDS = [line.strip() for line in f.readlines()]
 
     train_dataset = ECGDataset_halfday(DATA_PATH, PATIENT_IDS, FS, NUM_FINETRE, NUM_SECONDI, LEADS, 'training')
     test_dataset = ECGDataset_halfday(DATA_PATH, PATIENT_IDS, FS, NUM_FINETRE, NUM_SECONDI, LEADS, 'test')
@@ -112,8 +120,4 @@ def run_halfday(NUM_FINETRE, NUM_SECONDI, NUM_BATCH, LEADS, NUM_EPOCHS, DATA_PAT
                               output_shape = output_shape
                               )
     return accuracy
-
-
-
-
 

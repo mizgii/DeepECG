@@ -114,6 +114,11 @@ def preprocess_and_save(data_path, save_path):
     info_path = os.path.join(data_path, 'info.txt')
     patient_ids = extract_patient_ids(info_path)
 
+    patient_ids_path = os.path.join(save_path, 'patient_ids.txt')
+    with open(patient_ids_path, 'w') as f:
+        for id in patient_ids:
+            f.write(f"{id}\n")
+
     for patient_id in tqdm(patient_ids, desc='Processing Patients'):
         record_path = os.path.join(data_path, f"0{patient_id}") #I'm adding a zero before id coz thats how the files are saved
         save_signals_file = os.path.join(save_path, f"{patient_id}_signal.npy")
