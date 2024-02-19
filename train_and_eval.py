@@ -35,11 +35,9 @@ def train_model(model: torch.nn.Module,
         print(f"Train loss: {train_loss / len(data_loader):.5f} | Train accuracy: {train_acc:.2f}%")
         accuracy_metric.reset()
 
-        epoch_time = int((time.time() - start_time) // 60)  
-        print(f"Epoch {epoch+1}/{num_epochs} completed in {epoch_time} minutes")
-
     total_time = int((time.time() - start_time)//60)
-    print(f"Total training time: {total_time} minutes")
+    print(f"\nTotal training time: {total_time} minutes")
+    return total_time 
 
 
 def evaluate_model(model: torch.nn.Module,
@@ -47,11 +45,13 @@ def evaluate_model(model: torch.nn.Module,
                    loss_fn: torch.nn.Module, #criterion
                    device: torch.device,
                    output_shape):
+    
+    start_time = time.time()
 
     test_loss = 0
     accuracy_metric = Accuracy(num_classes=output_shape, task='multiclass').to(device)
 
-    model.eval()#
+    model.eval()
     with torch.inference_mode(): 
         for signal, class_label in test_loader:
             signal, class_label = signal.to(device), class_label.to(device)
@@ -62,7 +62,10 @@ def evaluate_model(model: torch.nn.Module,
             accuracy_metric(test_pred, class_label)
 
     test_acc = accuracy_metric.compute() * 100  
-    print(f"Test loss: {test_loss/len(test_loader):.5f} | Test accuracy: {test_acc:.2f}%\n")
+    print(f"\nTest loss: {test_loss/len(test_loader):.5f} | Test accuracy: {test_acc:.2f}%")
     accuracy_metric.reset() 
 
-    return test_acc.item()
+    total_time = int((time.time() - start_time)//60)
+    print(f"Total evaluation time: {total_time} minutes")
+
+    return test_acc.item(), total_time 
