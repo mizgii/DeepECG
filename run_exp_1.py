@@ -11,6 +11,7 @@ if __name__ == "__main__":
     path = sys.argv[1]
 
     os.makedirs('exp1_results', exist_ok=True)
+    print("Test by increasing the number of patients with III+V3+V5")
     for patient in range(20, 139, 20):
         accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
                                                               NUM_SECONDS=2, 
@@ -24,6 +25,8 @@ if __name__ == "__main__":
             f.write(f"With number patients: {patient}:\n")
             f.write(f"Accuracy: {accuracy}, Time train: {total_train_time}, Time eval: {total_eval_time}\n\n")
     
+    print("Test by increasing the number of patients with III+V3")
+
     for patient in range(20, 139, 20):
         accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
                                                               NUM_SECONDS=2, 
@@ -36,6 +39,8 @@ if __name__ == "__main__":
         with open('exp1_results/result-III-V3.txt', 'a') as f:
             f.write(f"With number patients: {patient}:\n")
             f.write(f"Accuracy: {accuracy}, Time train: {total_train_time}, Time eval: {total_eval_time}\n\n")
+
+    print("Test by increasing the number of patients with V5")
 
     for patient in range(20, 139, 20):
         accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
@@ -50,6 +55,7 @@ if __name__ == "__main__":
             f.write(f"With number patients: {patient}:\n")
             f.write(f"Accuracy: {accuracy}, Time train: {total_train_time}, Time eval: {total_eval_time}\n\n")
 
+    print("Test by increasing the number of patients with V3")
     for patient in range(20, 139, 20):
         accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
                                                               NUM_SECONDS=2, 
@@ -63,6 +69,7 @@ if __name__ == "__main__":
             f.write(f"With number patients: {patient}:\n")
             f.write(f"Accuracy: {accuracy}, Time train: {total_train_time}, Time eval: {total_eval_time}\n\n")
 
+    print("Test by increasing the number of patients with III")
     for patient in range(20, 139, 20):
         accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
                                                               NUM_SECONDS=2, 
