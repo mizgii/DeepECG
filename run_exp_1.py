@@ -5,7 +5,7 @@ import os
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 2:
         print("Usage: <data_path> ")
         sys.exit(1)
     path = sys.argv[1]
