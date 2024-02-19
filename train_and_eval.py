@@ -35,8 +35,8 @@ def train_model(model: torch.nn.Module,
         print(f"Train loss: {train_loss / len(data_loader):.5f} | Train accuracy: {train_acc:.2f}%")
         accuracy_metric.reset()
 
-    total_time = int((time.time() - start_time)//60)
-    print(f"\nTotal training time: {total_time} minutes")
+    total_time = int((time.time() - start_time))
+    print(f"\nTotal training time: {total_time} seconds")
     return total_time 
 
 
@@ -65,7 +65,7 @@ def evaluate_model(model: torch.nn.Module,
     print(f"\nTest loss: {test_loss/len(test_loader):.5f} | Test accuracy: {test_acc:.2f}%")
     accuracy_metric.reset() 
 
-    total_time = int((time.time() - start_time)//60)
-    print(f"Total evaluation time: {total_time} minutes")
+    total_time = int((time.time() - start_time))
+    print(f"Total evaluation time: {total_time} seconds")
 
     return test_acc.item(), total_time 

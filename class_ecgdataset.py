@@ -28,6 +28,9 @@ class ECGDataset(Dataset):
                 segment = signal[:, start_point:end_point]
                 self.segments.append(segment)
                 self.labels.append(self.id_mapped[patient_id])
+
+        self.segments = np.array(self.segments)
+        self.labels = np.array(self.labels)
                 
     def load_signal(self, patient_id):
         signal_path = os.path.join(self.data_path, f"{patient_id}_signal.npy")

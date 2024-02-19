@@ -1,6 +1,5 @@
 
 import os
-import time
 import torch
 import random
 from torch import nn
@@ -9,7 +8,7 @@ from sklearn.model_selection import train_test_split
 import random
 
 import neural
-from class_ecgdataset import ECGDataset_halfday, ECGDataset
+from class_ecgdataset import ECGDataset
 from train_and_eval import train_model, evaluate_model
 
 
