@@ -1,5 +1,6 @@
 .venv/
+venv/
 cache/
-exp2_results/
 exp1_results/
+exp2_results/
 __pycache__/
