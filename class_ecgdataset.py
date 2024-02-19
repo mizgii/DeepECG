@@ -3,8 +3,6 @@ import torch
 import numpy as np
 from torch.utils.data import Dataset
 
-np.random.seed(42)
-
 class ECGDataset(Dataset):
     def __init__(self, data_path, patient_ids, fs, n_windows, n_seconds, leads=None):
         self.data_path = data_path
@@ -21,8 +19,9 @@ class ECGDataset(Dataset):
         if patient_id not in self.signal_cache:
             signal_path = os.path.join(self.data_path, f"{patient_id}_signal.npy")
             signal = np.load(signal_path)
+            signal = signal[:, :15*3600*self.fs]
             if self.leads is not None:
-                signal = signal[self.leads, :]
+                signal = signal[self.leads, :15*3600*self.fs]
             self.signal_cache[patient_id] = signal
         return self.signal_cache[patient_id]
 
@@ -45,9 +44,9 @@ class ECGDataset(Dataset):
         start_point = self.segment_starts[patient_id][window_index]
         end_point = start_point + self.n_seconds * self.fs
 
-        label = self.id_mapped[patient_id]  
+        signal = self.load_signal(patient_id)
         segment = signal[:, start_point:end_point]
-        label = self.id_mapped[patient_id]
+        label = self.id_mapped[patient_id]  
 
         return torch.tensor(segment, dtype=torch.float), torch.tensor(label, dtype=torch.long)
     
