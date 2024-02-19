@@ -8,8 +8,8 @@ from run import run
 
 def run_experiment2(data_path):
 
-    segments_range = [500,350,200,100,50]
-    seconds_range = [1,2,5,7,10]
+    segments_range = [100,50]#[500,350,200,100,50]
+    seconds_range = [1,2]#[1,2,5,7,10]
     leads = [0,1]
 
     accuracy_grid = np.zeros((len(segments_range), len(seconds_range)))
@@ -38,7 +38,7 @@ def run_experiment2(data_path):
     np.savetxt('exp2_results/train_time_grid.csv', train_time_grid, delimiter=',', fmt='%.2f')
     np.savetxt('exp2_results/eval_time_grid.csv', eval_time_grid, delimiter=',', fmt='%.2f')
 
-    yticklabels = [w/2 for w in segments_range]
+    yticklabels = [int(w/2) for w in segments_range]
     plt.figure(figsize=(10, 8))
     sns.heatmap(accuracy_grid, annot=True, fmt=".2f", xticklabels=seconds_range, yticklabels=yticklabels)
     plt.xlabel('NUMBER OF SECONDS')
