@@ -19,8 +19,9 @@ class ECGDataset(Dataset):
         if patient_id not in self.signal_cache:
             signal_path = os.path.join(self.data_path, f"{patient_id}_signal.npy")
             signal = np.load(signal_path)
+            signal = signal[:, :15*3600*self.fs]
             if self.leads is not None:
-                signal = signal[self.leads, :]
+                signal = signal[self.leads, :15*3600*self.fs]
             self.signal_cache[patient_id] = signal
         return self.signal_cache[patient_id]
 
@@ -45,7 +46,7 @@ class ECGDataset(Dataset):
 
         signal = self.load_signal(patient_id)
         segment = signal[:, start_point:end_point]
-        label = self.id_mapped[patient_id]
+        label = self.id_mapped[patient_id]  
 
         return torch.tensor(segment, dtype=torch.float), torch.tensor(label, dtype=torch.long)
     
