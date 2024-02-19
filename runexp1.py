@@ -1,6 +1,6 @@
 import run
 import sys
-import numpy as np
+import os
 
 
 
@@ -8,35 +8,70 @@ if __name__ == "__main__":
     if len(sys.argv) != 3:
         print("Usage: <data_path> ")
         sys.exit(1)
-
     path = sys.argv[1]
-    accu1=[]
-    for patient in range(20, 20, 139):
-        accuracy = run.run(NUM_FINETRE=500, NUM_SECONDI=2, NUM_BATCH=16, NUM_EPOCHS=200, LEADS=[0,1,2], FS=128, DATA_PATH=path, NUM_PAT=patient)
-        accu1.append(accuracy)
+
+    os.makedirs('exp1_results', exist_ok=True)
+    for patient in range(20, 139, 20):
+        accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
+                                                              NUM_SECONDS=2, 
+                                                              NUM_BATCH=16, 
+                                                              LEADS=[0,1,2], 
+                                                              NUM_EPOCHS=10, 
+                                                              DATA_PATH = path, 
+                                                              FS=128,
+                                                              NUM_PAT=patient)
+        with open('exp1_results/result-III-V3-V5.txt', 'a') as f:
+            f.write(f"With atients: {patient}:\n")
+            f.write(f"Accuracy: {accuracy}, Time train: {total_train_time}, Time eval: {total_eval_time}\n\n")
     
-    accu2=[]
-    for patient in range(20, 20, 139):
-        run.run(NUM_FINETRE=500, NUM_SECONDI=2, NUM_BATCH=16, NUM_EPOCHS=200, LEADS=[0,1], FS=128, DATA_PATH=path, NUM_PAT=patient)
-        accu2.append(accuracy)
+    for patient in range(20, 139, 20):
+        accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
+                                                              NUM_SECONDS=2, 
+                                                              NUM_BATCH=16, 
+                                                              LEADS=[0,1], 
+                                                              NUM_EPOCHS=10, 
+                                                              DATA_PATH = path, 
+                                                              FS=128,
+                                                              NUM_PAT=patient)
+        with open('exp1_results/result-III-V3.txt', 'a') as f:
+            f.write(f"With atients: {patient}:\n")
+            f.write(f"Accuracy: {accuracy}, Time train: {total_train_time}, Time eval: {total_eval_time}\n\n")
 
-    accu3=[]
-    for patient in range(20, 20, 139):
-        run.run(NUM_FINETRE=500, NUM_SECONDI=2, NUM_BATCH=16, NUM_EPOCHS=200, LEADS=[2], FS=128, DATA_PATH=path, NUM_PAT=patient)
-        accu3.append(accuracy)
+    for patient in range(20, 139, 20):
+        accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
+                                                              NUM_SECONDS=2, 
+                                                              NUM_BATCH=16, 
+                                                              LEADS=[2], 
+                                                              NUM_EPOCHS=10, 
+                                                              DATA_PATH = path, 
+                                                              FS=128,
+                                                              NUM_PAT=patient)
+        with open('exp1_results/result-V5.txt', 'a') as f:
+            f.write(f"With atients: {patient}:\n")
+            f.write(f"Accuracy: {accuracy}, Time train: {total_train_time}, Time eval: {total_eval_time}\n\n")
 
-    accu4=[]
-    for patient in range(20, 20, 139):
-        run.run(NUM_FINETRE=500, NUM_SECONDI=2, NUM_BATCH=16, NUM_EPOCHS=200, LEADS=[1], FS=128, DATA_PATH=path, NUM_PAT=patient)
-        accu4.append(accuracy)
+    for patient in range(20, 139, 20):
+        accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
+                                                              NUM_SECONDS=2, 
+                                                              NUM_BATCH=16, 
+                                                              LEADS=[1], 
+                                                              NUM_EPOCHS=10, 
+                                                              DATA_PATH = path, 
+                                                              FS=128,
+                                                              NUM_PAT=patient)
+        with open('exp1_results/result-V3.txt', 'a') as f:
+            f.write(f"With atients: {patient}:\n")
+            f.write(f"Accuracy: {accuracy}, Time train: {total_train_time}, Time eval: {total_eval_time}\n\n")
 
-    accu5=[]
-    for patient in range(20, 20, 139):
-        run.run(NUM_FINETRE=500, NUM_SECONDI=2, NUM_BATCH=16, NUM_EPOCHS=200, LEADS=[0], FS=128, DATA_PATH=path, NUM_PAT=patient)
-        accu5.append(accuracy)
-
-    np.save('patients-3leads.npy', accu1)
-    np.save('patients-III-V3leads.npy', accu2)
-    np.save('patients-V5leads.npy', accu3)
-    np.save('patients-V3leads.npy', accu4)
-    np.save('patients-IIIleads.npy', accu5)
+    for patient in range(20, 139, 20):
+        accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
+                                                              NUM_SECONDS=2, 
+                                                              NUM_BATCH=16, 
+                                                              LEADS=[0], 
+                                                              NUM_EPOCHS=10, 
+                                                              DATA_PATH = path, 
+                                                              FS=128,
+                                                              NUM_PAT=patient)
+        with open('exp1_results/result-III.txt', 'a') as f:
+            f.write(f"With atients: {patient}:\n")
+            f.write(f"Accuracy: {accuracy}, Time train: {total_train_time}, Time eval: {total_eval_time}\n\n")

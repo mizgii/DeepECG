@@ -8,8 +8,8 @@ from run import run
 
 def run_experiment2(data_path):
 
-    segments_range = [100,50]#[500,350,200,100,50]
-    seconds_range = [1,2]#[1,2,5,7,10]
+    segments_range = [500,350,200,100,50]
+    seconds_range = [1,2,5,7,10]
     leads = [0,1]
 
     accuracy_grid = np.zeros((len(segments_range), len(seconds_range)))
