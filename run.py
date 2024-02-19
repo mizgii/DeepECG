@@ -17,6 +17,8 @@ def run(NUM_FINETRE, NUM_SECONDI, NUM_BATCH, LEADS, NUM_EPOCHS, DATA_PATH, FS):
     patient_ids_path = os.path.join(DATA_PATH, 'patient_ids.txt')
     with open(patient_ids_path, 'r') as f:
         PATIENT_IDS = [line.strip() for line in f.readlines()]
+    
+    PATIENT_IDS = PATIENT_IDS[:3]
 
     full_dataset = ECGDataset(DATA_PATH, PATIENT_IDS, FS, NUM_FINETRE, NUM_SECONDI, LEADS)
 
@@ -121,3 +123,29 @@ def run_halfday(NUM_FINETRE, NUM_SECONDI, NUM_BATCH, LEADS, NUM_EPOCHS, DATA_PAT
                               )
     return accuracy
 
+
+
+if __name__ == "__main__":
+    data_path = r"C:\Users\mizgi\Desktop\gowno\studia\erasmus\a_lab_bisp\DeepECG\sharee_preprocessed"
+    info_path = r'C:\Users\mizgi\Desktop\gowno\studia\erasmus\a_lab_bisp\DeepECG\sharee\info.txt'
+
+    fs=128
+
+
+    # accuracy= run_halfday(NUM_FINETRE=50, 
+    #                       NUM_SECONDI=2, 
+    #                       NUM_BATCH=16, 
+    #                       LEADS=[0,1,2], 
+    #                       NUM_EPOCHS=10, 
+    #                       DATA_PATH = data_path,
+    #                       FS=128)
+    
+    accuracy= run(NUM_FINETRE=50, 
+                  NUM_SECONDI=2, 
+                  NUM_BATCH=16, 
+                  LEADS=[0,1,2], 
+                  NUM_EPOCHS=10, 
+                  DATA_PATH = data_path, 
+                  FS=128)
+
+    print(accuracy)
