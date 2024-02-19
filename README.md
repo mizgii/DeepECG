@@ -40,6 +40,7 @@ C:\path\DeepECG> C:\path_to_program\DeepECG\venv\Scripts\activate
 (venv) C:\path\DeepECG> python run_exp_1.py 'path/to/preprocessed/data'
 ```
 
+
 ## Authors
 Dr. Massimo W. Rivolta
 
