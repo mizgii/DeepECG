@@ -11,13 +11,14 @@ if __name__ == "__main__":
     path = sys.argv[1]
 
     os.makedirs('exp1_results', exist_ok=True)
-    print("Test by increasing the number of patients with III+V3+V5")
+
     for patient in range(20, 139, 20):
+        print(f"Training for {patient} patients with III+V3+V5")
         accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
                                                               NUM_SECONDS=2, 
                                                               NUM_BATCH=16, 
                                                               LEADS=[0,1,2], 
-                                                              NUM_EPOCHS=10, 
+                                                              NUM_EPOCHS=200, 
                                                               DATA_PATH = path, 
                                                               FS=128,
                                                               NUM_PATIENTS=patient)
@@ -25,14 +26,14 @@ if __name__ == "__main__":
             f.write(f"With number patients: {patient}:\n")
             f.write(f"Accuracy: {accuracy}, Time train: {total_train_time}, Time eval: {total_eval_time}\n\n")
     
-    print("Test by increasing the number of patients with III+V3")
 
     for patient in range(20, 139, 20):
+        print(f"Training for {patient} patients with III+V3")
         accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
                                                               NUM_SECONDS=2, 
                                                               NUM_BATCH=16, 
                                                               LEADS=[0,1], 
-                                                              NUM_EPOCHS=10, 
+                                                              NUM_EPOCHS=200, 
                                                               DATA_PATH = path, 
                                                               FS=128,
                                                               NUM_PATIENTS=patient)
@@ -40,14 +41,13 @@ if __name__ == "__main__":
             f.write(f"With number patients: {patient}:\n")
             f.write(f"Accuracy: {accuracy}, Time train: {total_train_time}, Time eval: {total_eval_time}\n\n")
 
-    print("Test by increasing the number of patients with V5")
-
     for patient in range(20, 139, 20):
+        print(f"Training for {patient} patients with V5")
         accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
                                                               NUM_SECONDS=2, 
                                                               NUM_BATCH=16, 
                                                               LEADS=[2], 
-                                                              NUM_EPOCHS=10, 
+                                                              NUM_EPOCHS=200, 
                                                               DATA_PATH = path, 
                                                               FS=128,
                                                               NUM_PATIENTS=patient)
@@ -55,13 +55,13 @@ if __name__ == "__main__":
             f.write(f"With number patients: {patient}:\n")
             f.write(f"Accuracy: {accuracy}, Time train: {total_train_time}, Time eval: {total_eval_time}\n\n")
 
-    print("Test by increasing the number of patients with V3")
     for patient in range(20, 139, 20):
+        print(f"Training for {patient} patients with V3")
         accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
                                                               NUM_SECONDS=2, 
                                                               NUM_BATCH=16, 
                                                               LEADS=[1], 
-                                                              NUM_EPOCHS=10, 
+                                                              NUM_EPOCHS=200, 
                                                               DATA_PATH = path, 
                                                               FS=128,
                                                               NUM_PATIENTS=patient)
@@ -69,13 +69,13 @@ if __name__ == "__main__":
             f.write(f"With number patients: {patient}:\n")
             f.write(f"Accuracy: {accuracy}, Time train: {total_train_time}, Time eval: {total_eval_time}\n\n")
 
-    print("Test by increasing the number of patients with III")
     for patient in range(20, 139, 20):
+        print(f"Training for {patient} patients with III")
         accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
                                                               NUM_SECONDS=2, 
                                                               NUM_BATCH=16, 
                                                               LEADS=[0], 
-                                                              NUM_EPOCHS=10, 
+                                                              NUM_EPOCHS=200, 
                                                               DATA_PATH = path, 
                                                               FS=128,
                                                               NUM_PATIENTS=patient)
