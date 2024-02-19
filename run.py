@@ -18,6 +18,8 @@ def run(NUM_SEGMENTS, NUM_SECONDS, NUM_BATCH, LEADS, NUM_EPOCHS, DATA_PATH, FS, 
     random.seed(44)
 
     device = "cuda" if torch.cuda.is_available() else "cpu" 
+    
+    print(device)
 
     patient_ids_path = os.path.join(DATA_PATH, 'patient_ids.txt')
     with open(patient_ids_path, 'r') as f:
