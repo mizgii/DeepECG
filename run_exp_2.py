@@ -26,7 +26,7 @@ def run_experiment2(data_path):
                                                               LEADS=leads, 
                                                               NUM_EPOCHS=10, 
                                                               DATA_PATH = data_path, 
-                                                              FS=128,)
+                                                              FS=128)
             accuracy_grid[i, j] = accuracy
             train_time_grid[i,j] = total_train_time
             eval_time_grid[i,j] = total_eval_time

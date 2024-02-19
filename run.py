@@ -13,7 +13,7 @@ from class_ecgdataset import ECGDataset_halfday, ECGDataset
 from train_and_eval import train_model, evaluate_model
 
 
-def run(NUM_SEGMENTS, NUM_SECONDS, NUM_BATCH, LEADS, NUM_EPOCHS, DATA_PATH, FS, NUM_PAT):
+def run(NUM_SEGMENTS, NUM_SECONDS, NUM_BATCH, LEADS, NUM_EPOCHS, DATA_PATH, FS, NUM_PATIENTS=None):
 
     torch.manual_seed(44)
     random.seed(44)
@@ -24,7 +24,8 @@ def run(NUM_SEGMENTS, NUM_SECONDS, NUM_BATCH, LEADS, NUM_EPOCHS, DATA_PATH, FS, 
     with open(patient_ids_path, 'r') as f:
         PATIENT_IDS = [line.strip() for line in f.readlines()]
 
-    PATIENT_IDS = PATIENT_IDS[:NUM_PAT]
+    if NUM_PATIENTS is not None:
+        PATIENT_IDS = PATIENT_IDS[:NUM_PATIENTS]
 
     full_dataset = ECGDataset(DATA_PATH, PATIENT_IDS, FS, NUM_SEGMENTS, NUM_SECONDS, LEADS)
 
