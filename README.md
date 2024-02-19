@@ -29,6 +29,16 @@ C:\path\DeepECG> C:\path_to_program\DeepECG\venv\Scripts\activate
 (venv) C:\path\DeepECG> pip install -r requirements.txt
 ```
 
+## Pipeline
+
+1. preprocessing and saving the data
+```commandline
+(venv) C:\path\DeepECG> python preprocess 'path/to/data' 'path/to/saving/directory'
+```
+2. running the experiments
+```commandline
+(venv) C:\path\DeepECG> python run_exp_1.py 'path/to/preprocessed/data'
+```
 
 ## Authors
 Dr. Massimo W. Rivolta
@@ -37,6 +47,7 @@ Zofia Mizgalewicz
 
 Christian R. Cuenca
 
+## Links
 To see whats happaning in the [BISP](https://bisp.di.unimi.it/)
 
 For more details on the dataset, visit [SHAREEDB](https://physionet.org/content/shareedb/1.0.0/)
