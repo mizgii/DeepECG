@@ -45,7 +45,7 @@ class ECGDataset(Dataset):
         start_point = self.segment_starts[patient_id][window_index]
         end_point = start_point + self.n_seconds * self.fs
 
-        signal = self.load_signal(patient_id)
+        label = self.id_mapped[patient_id]  
         segment = signal[:, start_point:end_point]
         label = self.id_mapped[patient_id]
 
