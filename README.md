@@ -29,6 +29,12 @@ C:\path\DeepECG> C:\path_to_program\DeepECG\venv\Scripts\activate
 (venv) C:\path\DeepECG> pip install -r requirements.txt
 ```
 
+## Pipeline
+
+1. Run dataset.py
+
+2. 
+
 
 ## Authors
 Dr. Massimo W. Rivolta

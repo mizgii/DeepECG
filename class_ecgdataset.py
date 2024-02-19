@@ -3,8 +3,6 @@ import torch
 import numpy as np
 from torch.utils.data import Dataset
 
-np.random.seed(42)
-
 class ECGDataset(Dataset):
     def __init__(self, data_path, patient_ids, fs, n_windows, n_seconds, leads=None):
         self.data_path = data_path
