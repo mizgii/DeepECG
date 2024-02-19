@@ -24,7 +24,7 @@ def run_experiment2(data_path):
                                                               NUM_SECONDS=num_seconds, 
                                                               NUM_BATCH=16, 
                                                               LEADS=leads, 
-                                                              NUM_EPOCHS=10, 
+                                                              NUM_EPOCHS=200, 
                                                               DATA_PATH = data_path, 
                                                               FS=128)
             accuracy_grid[i, j] = accuracy
