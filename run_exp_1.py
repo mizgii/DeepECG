@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     os.makedirs('exp1_results', exist_ok=True)
 
-    for patient in range(20, 139, 20):
+    for patient in range(20, 150, 20):
         print(f"Training for {patient} patients with III+V3+V5")
         accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
                                                               NUM_SECONDS=2, 
@@ -27,7 +27,7 @@ if __name__ == "__main__":
             f.write(f"Accuracy: {accuracy}, Time train: {total_train_time}, Time eval: {total_eval_time}\n\n")
     
 
-    for patient in range(20, 139, 20):
+    for patient in range(20, 150, 20):
         print(f"Training for {patient} patients with III+V3")
         accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
                                                               NUM_SECONDS=2, 
@@ -41,7 +41,7 @@ if __name__ == "__main__":
             f.write(f"With number patients: {patient}:\n")
             f.write(f"Accuracy: {accuracy}, Time train: {total_train_time}, Time eval: {total_eval_time}\n\n")
 
-    for patient in range(20, 139, 20):
+    for patient in range(20, 150, 20):
         print(f"Training for {patient} patients with V5")
         accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
                                                               NUM_SECONDS=2, 
@@ -55,7 +55,7 @@ if __name__ == "__main__":
             f.write(f"With number patients: {patient}:\n")
             f.write(f"Accuracy: {accuracy}, Time train: {total_train_time}, Time eval: {total_eval_time}\n\n")
 
-    for patient in range(20, 139, 20):
+    for patient in range(20, 150, 20):
         print(f"Training for {patient} patients with V3")
         accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
                                                               NUM_SECONDS=2, 
@@ -69,7 +69,7 @@ if __name__ == "__main__":
             f.write(f"With number patients: {patient}:\n")
             f.write(f"Accuracy: {accuracy}, Time train: {total_train_time}, Time eval: {total_eval_time}\n\n")
 
-    for patient in range(20, 139, 20):
+    for patient in range(20, 150, 20):
         print(f"Training for {patient} patients with III")
         accuracy, total_train_time, total_eval_time  = run.run(NUM_SEGMENTS=500, 
                                                               NUM_SECONDS=2, 
