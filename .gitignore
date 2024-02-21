@@ -3,4 +3,5 @@ venv/
 cache/
 exp1_results/
 exp2_results/
+exp3_results/
 __pycache__/
