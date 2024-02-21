@@ -13,7 +13,7 @@ def extract_acc(filename):
     return accuracy_array
 
 
-patients = list(range(20, 130, 20))
+patients = list(range(20, 150, 20))
 accuracies1 = extract_acc('exp1_results/result-III-V3-V5.txt')
 accuracies2 = extract_acc('exp1_results/result-III-V3.txt')
 accuracies3 = extract_acc('exp1_results/result-V5.txt')
