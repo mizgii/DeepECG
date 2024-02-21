@@ -48,7 +48,7 @@ def run_experiment2(data_path):
     np.savetxt('exp2_results/eval_time_grid.csv', eval_time_grid, delimiter=',', fmt='%.2f')
 
     yticklabels = [int(w/2) for w in segments_range]
-    plt.figure(figsize=(10, 8))
+    plt.figure(figsize=(10, 8), dpi=100)
     sns.heatmap(accuracy_grid, annot=True, fmt=".2f", xticklabels=seconds_range, yticklabels=yticklabels)
     plt.xlabel('NUMBER OF SECONDS')
     plt.ylabel('TRAIN SAMPLES PER SUBJECT')

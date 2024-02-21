@@ -21,7 +21,7 @@ def run_experiment3(data_path):
         print(f"Running experiment for lead: {lead}")
         accuracy, train_time, eval_time = run_deepecg(NUM_BATCH=16,
                                                       LEAD=lead, 
-                                                      NUM_EPOCHS=10, 
+                                                      NUM_EPOCHS=200, 
                                                       DATA_PATH=data_path, 
                                                       FS=128)
         results.append((lead, accuracy, train_time, eval_time))
