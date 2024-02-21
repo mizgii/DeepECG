@@ -7,6 +7,16 @@ from run import run
 
 
 def run_experiment2(data_path):
+    '''
+    Function that conducts a series of experiments with varying number of segments and segment lengths
+
+    Parameters:
+    data_path (str): path to the preprocessed dataset.
+
+    Saves:
+    - CSV files for accuracy, training time, and evaluation time grids, and 
+    - a heatmap plot of model accuracy in the 'exp2_results' directory.
+    '''
 
     segments_range = [500,350,200,100,50]
     seconds_range = [1,2,5,7,10]
@@ -42,7 +52,8 @@ def run_experiment2(data_path):
     sns.heatmap(accuracy_grid, annot=True, fmt=".2f", xticklabels=seconds_range, yticklabels=yticklabels)
     plt.xlabel('NUMBER OF SECONDS')
     plt.ylabel('TRAIN SAMPLES PER SUBJECT')
-    plt.show()
+    plt.savefig('exp2_results/accuracy_heatmap.png')
+    plt.close()
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
