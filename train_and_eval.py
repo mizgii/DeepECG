@@ -66,6 +66,6 @@ def evaluate_model(model: torch.nn.Module,
     accuracy_metric.reset() 
 
     total_time = int((time.time() - start_time))
-    print(f"Total evaluation time: {total_time} seconds")
+    print(f"Total evaluation time: {total_time} seconds\n")
 
     return test_acc.item(), total_time 

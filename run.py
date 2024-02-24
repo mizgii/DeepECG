@@ -1,6 +1,5 @@
 
 import os
-import time
 import torch
 import random
 from torch import nn
@@ -109,7 +108,6 @@ def run_deepecg(NUM_BATCH, LEAD, NUM_EPOCHS, DATA_PATH, FS):
     
     print(f'Used device: {device}')
     print('Loading signals...')
-    start_time = time.time()
 
     patient_ids_path = os.path.join(DATA_PATH, 'patient_ids.txt')
     with open(patient_ids_path, 'r') as f:
@@ -119,9 +117,6 @@ def run_deepecg(NUM_BATCH, LEAD, NUM_EPOCHS, DATA_PATH, FS):
 
     # stratified split to maintain equal distribution of each patient's data
     train_indices, test_indices = train_test_split(range(len(full_dataset)), test_size=0.5, stratify=full_dataset.labels)
-      
-    total_time = int((time.time() - start_time))
-    print(f"Total loading time: {total_time//60} minutes and {total_time%60} seconds\n")
 
     train_dataset = Subset(full_dataset, train_indices)
     test_dataset = Subset(full_dataset, test_indices)
