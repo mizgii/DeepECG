@@ -57,7 +57,7 @@ def filter_signal(signal, fs):
             print("NaN values detected during filtering, interpolating...")
             signal = np.nan_to_num(signal)  # Replace NaNs with zeros
 
-        [b, a] = butter(3, 0.5, btype='highpass', fs=fs)
+        [b, a] = butter(3, (0.5, 40), btype='bandpass', fs=fs)
         signal = filtfilt(b, a, signal, axis=1)
         [bn, an] = iirnotch(50, 3, fs=fs)
         signal = filtfilt(bn, an, signal, axis=1)

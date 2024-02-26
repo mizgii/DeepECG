@@ -4,7 +4,10 @@ from run import run, run_deepecg
 
 def run_experiment3(data_path):
     '''
-    Runs experiments for signal preprocessed as described in DeepECG, for leads 0, 1, 2.
+    Runs experiments for each lead separately for signal:
+     - preprocessed as described in DeepECG and 
+     - with simplified preprocessing.
+
     Saves the results to a text file in the 'exp3_results' directory.
 
     Parameters:
