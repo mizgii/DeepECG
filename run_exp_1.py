@@ -99,15 +99,15 @@ def run_experiment1(data_path):
     plt.plot(num_subjects, accuracies4, '#98CE00',marker='.', label='V3')
     plt.plot(num_subjects, accuracies5, '#FFC857',marker='.', label='III')
 
-    plt.xlabel('NUMBER OF SUBJECTS')
-    plt.ylabel('ACCURACY %')
+    plt.xlabel('Number of subjects', fontsize=16)
+    plt.ylabel('Accuracy (%)', fontsize=16)
+    plt.tick_params(axis='both', which='major', labelsize=12)
     plt.legend()
     plt.xlim((np.min(num_subjects),np.max(num_subjects)))
     plt.grid(True, 'both')
     plt.savefig('exp1_results/fig_exp1.png')
     plt.show()
     plt.close()
-
 
 
 if __name__ == "__main__":
