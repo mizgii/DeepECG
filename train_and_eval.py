@@ -17,13 +17,13 @@ def train_model(model: torch.nn.Module,
     for epoch in range(num_epochs):
         print(f'Epoch {epoch + 1}/{num_epochs}')
 
-        model.train() #making sure model is in training mode
+        model.train() 
         train_loss = 0
         for signal, class_label in data_loader: 
             signal, class_label = signal.to(device), class_label.to(device) #
             train_pred = model(signal)
             loss = loss_fn(train_pred, class_label)
-            train_loss += loss.item() #converts a tensor to a Python scalar, more memory efficent
+            train_loss += loss.item() 
 
             accuracy_metric(train_pred, class_label)
 
@@ -35,7 +35,7 @@ def train_model(model: torch.nn.Module,
         print(f"Train loss: {train_loss / len(data_loader):.5f} | Train accuracy: {train_acc:.2f}%")
         accuracy_metric.reset()
 
-    total_time = int((time.time() - start_time))
+    total_time = (time.time() - start_time)
     print(f"\nTotal training time: {total_time} seconds")
     return total_time 
 
@@ -65,7 +65,7 @@ def evaluate_model(model: torch.nn.Module,
     print(f"\nTest loss: {test_loss/len(test_loader):.5f} | Test accuracy: {test_acc:.2f}%")
     accuracy_metric.reset() 
 
-    total_time = int((time.time() - start_time))
+    total_time = (time.time() - start_time)
     print(f"Total evaluation time: {total_time} seconds\n")
 
     return test_acc.item(), total_time 

@@ -5,10 +5,14 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from run import run
 
+from matplotlib.colors import LinearSegmentedColormap
+
 
 def run_experiment2(data_path):
     '''
-    Function that conducts a series of experiments with varying number of segments and segment lengths
+    Function that conducts a series of experiments with varying:
+     - number of segments used for training and testing (N)
+     - segment length (T)
 
     Parameters:
     data_path (str): path to the preprocessed dataset.
@@ -47,12 +51,17 @@ def run_experiment2(data_path):
     np.savetxt('exp2_results/train_time_grid.csv', train_time_grid, delimiter=',', fmt='%.2f')
     np.savetxt('exp2_results/eval_time_grid.csv', eval_time_grid, delimiter=',', fmt='%.2f')
 
+    color_list = ["#FCDDD9", "#FABEB7", "#FAA99F", "#FA968A", "#F87F71",
+                "#DC7366", "#B15F56", "#884C45", "#593633", "#2E2322"]
+    custom_colormap = LinearSegmentedColormap.from_list("custom_salmon", color_list)
+
     yticklabels = [int(w/2) for w in segments_range]
     plt.figure(figsize=(10, 8), dpi=100)
-    sns.heatmap(accuracy_grid, annot=True, fmt=".2f", xticklabels=seconds_range, yticklabels=yticklabels)
-    plt.xlabel('NUMBER OF SECONDS')
-    plt.ylabel('TRAIN SAMPLES PER SUBJECT')
-    plt.savefig('exp2_results/accuracy_heatmap.png')
+    sns.heatmap(accuracy_grid, annot=True, fmt=".2f", xticklabels=seconds_range, yticklabels=yticklabels, 
+                cmap=custom_colormap, cbar_kws={'label': 'Accuracy %'})
+    plt.xlabel('NUMBER OF SECONDS (T)')
+    plt.ylabel('TRAIN SAMPLES PER SUBJECT (N)')
+    plt.savefig('exp2_results/fig_exp2.png')
     plt.close()
 
 if __name__ == "__main__":
