@@ -150,7 +150,7 @@ def preprocess_and_save(data_path, save_path):
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Usage: python dataset.py <data_path> <save_path>")
+        print("Usage: python preprocess.py <data_path> <save_path>")
         sys.exit(1)
 
     data_path = sys.argv[1]
